@@ -11,7 +11,8 @@ LABEL description="Example application of Scramjet"
 WORKDIR /app
 
 # COPY ["package.json", "package-lock.json", "./"]
-COPY [package.json pnpm-lock.yaml* ./]
+# COPY [package.json pnpm-lock.yaml* ./]
+COPY package.json pnpm-lock.yaml* ./
 
 RUN npm install -g pnpm
 RUN pnpm install --frozen-lockfile
