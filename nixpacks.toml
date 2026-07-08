@@ -1,0 +1,3 @@
+[providers]
+node = { packageManager = "pnpm" }
+rust = {}
