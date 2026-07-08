@@ -17,7 +17,7 @@ RUN npm install -g pnpm && pnpm install --prod --frozen-lockfile
 COPY . .
 
 # 5. Dynamic port compatibility 
-EXPOSE 8000/tcp
+EXPOSE 8000
 
 ENTRYPOINT [ "node" ]
 CMD ["src/index.js"]
