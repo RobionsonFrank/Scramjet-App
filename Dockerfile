@@ -1,28 +1,23 @@
 FROM node:18-alpine
 
 ENV NODE_ENV=production
-ARG NPM_BUILD="npm install --omit=dev"  
 
-EXPOSE 8080/tcp
-
-LABEL maintainer="Mercury Workshop"
-LABEL summary="Scramjet Demo Image"
-LABEL description="Example application of Scramjet"
+# 1. Install system utilities required for compilation
+RUN apk add --upgrade --no-cache python3 make g++
 
 WORKDIR /app
 
-# COPY ["package.json", "package-lock.json", "./"]
-# COPY [package.json pnpm-lock.yaml* ./]
+# 2. Copy dependency configuration files
 COPY package.json pnpm-lock.yaml* ./
 
-RUN npm install -g pnpm
-RUN pnpm install --frozen-lockfile
-RUN apk add --upgrade --no-cache python3 make g++
-RUN pnpm install --prod --frozen-lockfile
- 
-# RUN $NPM_BUILD
+# 3. Install pnpm globally and install production dependencies
+RUN npm install -g pnpm && pnpm install --prod --frozen-lockfile
 
+# 4. Copy the remaining source files into the container
 COPY . .
+
+# 5. Dynamic port compatibility 
+EXPOSE 8000/tcp
 
 ENTRYPOINT [ "node" ]
 CMD ["src/index.js"]
